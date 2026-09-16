@@ -46,6 +46,39 @@ Answers               →  full working, not just final values
 
 ---
 
+## Why it's shaped this way
+
+Two of the design choices here are mine rather than the research's, and it is worth separating them out.
+
+### It targets Obsidian, because that is where I study
+
+I keep my notes in [Obsidian](https://obsidian.md), I use it daily, and I recommend it to anyone studying technical material. Three things earn it that recommendation:
+
+- **The notes are plain markdown files on your disk.** No proprietary format, no lock-in, no export step. A walkthrough this skill writes is a `.md` file you own, and it stays readable in any text editor a decade from now.
+- **LaTeX renders natively.** `$H(S) = -\sum_i p_i \log_2 p_i$` becomes real notation in the reading view. For maths-heavy material that is the whole ballgame, and it is why every formula this skill emits is LaTeX rather than a picture or a code block.
+- **It is built for editing, not just reading.** You annotate, correct, and extend a walkthrough as you work through it. Wikilinks connect a lesson to the one before it, so a course becomes a graph instead of a pile of files.
+
+So the output is written for that workflow on purpose: YAML frontmatter, `$...$` and `$$...$$` maths, callouts for intuitions and warnings, answers in collapsed callouts so you cannot see them before you try, and `[[wikilinks]]` back to the previous lesson. It drops into a vault unmodified. [`check_obsidian.py`](skills/learning-walkthrough/scripts/check_obsidian.py) exists for one reason: a formula that does not render is a formula you cannot copy onto paper.
+
+None of that locks you in. It is still just a markdown file, and it opens anywhere.
+
+### It is built for working by hand, because that is how I learn maths
+
+I learn a mathematical idea by writing it out on paper with a pen. Copying a derivation line by line, doing the arithmetic myself, redrawing the diagram. Reading a proof and nodding along does not do it, and I do not think I am unusual in that.
+
+That belief is why the format is what it is. Every example is sized for a pen rather than a machine:
+
+- 4 to 10 rows of data, never a realistic dataset
+- clean denominators, small integers, logs of powers of two
+- one operation per line, with the substitution step written out, because not knowing which number goes where is the most common place to stall
+- the reason for each algebraic move named in the margin
+- every intermediate number computed in a script and verified before it is written down, so an hour of your paper time is never wasted chasing a typo
+- a cheat sheet designed to be copied onto one sheet and then rewritten from memory
+
+**An honest caveat, since this repo's own rule is to flag what is contested.** The popular claim that handwriting beats typing for notes did not cleanly replicate.[^4] I am not going to cite a shaky result to justify a preference. What *does* hold up is the reason the format works anyway: retrieval practice, the worked-example effect for beginners, and the generation effect all have solid support, and all three are things you get from working a problem rather than reading one. Do it by hand because the practice is well-founded. Not because of the headline.
+
+---
+
 ## The second skill: `slop-proofcheck`
 
 Telling a model "length is not a cost" is the single most reliable way to summon padding. So the walkthrough gets read back by a second skill before it is handed over.
