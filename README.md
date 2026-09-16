@@ -67,11 +67,14 @@ And three failure modes that only appear in explanatory writing, which a general
 
 **House rule: no long dashes.** No em dashes (`U+2014`), no en dashes (`U+2013`), anywhere. Plain hyphens only. This is deliberately stricter than correct typography: the em dash has become a loud surface tell of machine-written text, and readers now discount prose on sight of it. That costs more than the typographic nicety is worth, so it is enforced mechanically rather than left to judgment.
 
-Run it on anything, not just walkthroughs:
+Run it on anything, not just walkthroughs. Installed as a plugin the skill is namespaced; copied into `~/.claude/skills/` it is not:
 
 ```
+/learning-assistant:slop-proofcheck README.md
 /slop-proofcheck README.md
 ```
+
+The mechanical half is a plain script with no dependencies, so it also runs on its own, in CI or a pre-commit hook:
 
 ```bash
 python skills/slop-proofcheck/scripts/check_slop.py <file.md>
@@ -83,7 +86,7 @@ python skills/slop-proofcheck/scripts/check_slop.py <file.md>
 
 ## Install
 
-**Claude Code, as a plugin (recommended - this is the one that self-updates).** The repo is its own plugin marketplace:
+**Claude Code, as a plugin (recommended - this is the one you can update in place).** The repo is its own plugin marketplace:
 
 ```
 /plugin marketplace add samalyarov/learning-assistant
@@ -92,13 +95,22 @@ python skills/slop-proofcheck/scripts/check_slop.py <file.md>
 
 Both skills arrive namespaced, as `/learning-assistant:learning-walkthrough` and `/learning-assistant:slop-proofcheck`, and Claude still triggers them on its own from the descriptions.
 
-Updates are automatic. No `version` is pinned in the manifests, so the plugin tracks the repository's commit SHA: Claude Code refreshes registered marketplaces once per session and picks up whatever has been pushed. To pull one immediately rather than waiting for the next session:
+**Updating.** No `version` is pinned in either manifest, so the plugin tracks the repository's commit SHA rather than a release number. Every push is picked up, and nothing needs bumping to publish a change. Pull the latest with:
 
 ```
-/plugin marketplace update
+/plugin update learning-assistant@learning-assistant
 ```
 
-**Claude Code, as plain folders.** Skills are just directories, so copying them works too - you give up the auto-update:
+Or from a terminal, outside Claude Code:
+
+```bash
+claude plugin marketplace update learning-assistant
+claude plugin update learning-assistant@learning-assistant
+```
+
+Claude Code refreshes the marketplace listing on its own once per session, but the installed copy advances only when you run the update, and a restart applies it. Use the fully qualified `plugin@marketplace` id - the bare name returns "not found", since the plugin and the marketplace share a name.
+
+**Claude Code, as plain folders.** Skills are just directories, so copying them works too. You give up in-place updating, and have to re-copy by hand to pick up changes:
 
 ```bash
 git clone https://github.com/samalyarov/learning-assistant.git
