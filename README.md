@@ -2,7 +2,7 @@
 
 Two [Agent Skills](https://agentskills.io/specification) for Claude:
 
-- **`learning-walkthrough`** turns course material you don't understand into a study document you can actually work through - built from the ground up, every symbol named, every example small enough to redo on paper, every claim traceable to a real source.
+- **`learning-walkthrough`** turns course material into a study document you can actually work through - built from the ground up, every symbol named, every example small enough to redo on paper, every claim traceable to a real source.
 - **`slop-proofcheck`** reads the finished document back and strips the tells of machine-written prose, without flattening it into generic polish.
 
 Output is [Obsidian](https://obsidian.md)-ready: LaTeX maths, YAML frontmatter, callouts, and answers that stay collapsed until you open them.
@@ -13,7 +13,7 @@ Output is [Obsidian](https://obsidian.md)-ready: LaTeX maths, YAML frontmatter, 
 
 Ask an assistant to "explain this lesson" and you get a **summary** - material compressed for someone who already understands it. That is the opposite of what a learner needs, and it is also, empirically, one of the weakest ways to study: in the largest review of learning techniques, summarisation, rereading and highlighting all rated *low utility*, while practice testing and distributed practice rated highest.[^1]
 
-This skill produces a **walkthrough** instead: material *expanded* for someone who doesn't understand it yet, with the retrieval practice built in.
+This skill produces a **walkthrough** instead: material *expanded* for someone who doesn't understand it yet, with the appropriate practice built in.
 
 | A summary | A walkthrough |
 |---|---|
@@ -48,25 +48,25 @@ Answers               →  full working, not just final values
 
 ## Why it's shaped this way
 
-Two of the design choices here are mine rather than the research's, and it is worth separating them out.
+Two of the design choices here are mine and build upon the way I study and the tools I use.
 
 ### It targets Obsidian, because that is where I study
 
-I keep my notes in [Obsidian](https://obsidian.md), I use it daily, and I recommend it to anyone studying technical material. Three things earn it that recommendation:
+I keep my notes in [Obsidian](https://obsidian.md), I use it daily, and I recommend it to anyone studying technical material. Or any material, to be honest. Three things earn it that recommendation:
 
-- **The notes are plain markdown files on your disk.** No proprietary format, no lock-in, no export step. A walkthrough this skill writes is a `.md` file you own, and it stays readable in any text editor a decade from now.
+- **The notes are plain markdown files on your disk.** No proprietary format, no lock-in, no export step. A walkthrough this skill writes is a `.md` file you own, and it stays readable in any text editor a decade from now. This seems nice to have until some cloud software locks you out of your notes - and I've had this happen.
 - **LaTeX renders natively.** `$H(S) = -\sum_i p_i \log_2 p_i$` becomes real notation in the reading view. For maths-heavy material that is the whole ballgame, and it is why every formula this skill emits is LaTeX rather than a picture or a code block.
-- **It is built for editing, not just reading.** You annotate, correct, and extend a walkthrough as you work through it. Wikilinks connect a lesson to the one before it, so a course becomes a graph instead of a pile of files.
+- **It is built for editing, not just reading.** You annotate, correct, and extend a walkthrough as you work through it. Wikilinks connect a lesson to the one before it, so a course becomes a graph instead of a pile of files. There are also plenty of editing tools and addons.
 
 So the output is written for that workflow on purpose: YAML frontmatter, `$...$` and `$$...$$` maths, callouts for intuitions and warnings, answers in collapsed callouts so you cannot see them before you try, and `[[wikilinks]]` back to the previous lesson. It drops into a vault unmodified. [`check_obsidian.py`](skills/learning-walkthrough/scripts/check_obsidian.py) exists for one reason: a formula that does not render is a formula you cannot copy onto paper.
 
-None of that locks you in. It is still just a markdown file, and it opens anywhere.
+None of that locks you in. It is still just a markdown file, and it opens anywhere. 
 
 ### It is built for working by hand, because that is how I learn maths
 
-I learn a mathematical idea by writing it out on paper with a pen. Copying a derivation line by line, doing the arithmetic myself, redrawing the diagram. Reading a proof and nodding along does not do it, and I do not think I am unusual in that.
+I learn a mathematical idea by writing it out on by hand. I used to use actual pen and paper, but storing this information quickly became tedious and actually searching for something in hand-written notes is hell - so I moved over to a tablet. Copying a derivation line by line, doing the arithmetic myself, redrawing the diagram is what really makes the math click for me. Reading a proof and nodding along does not do it, and I do not think I am unusual in that.
 
-That belief is why the format is what it is. Every example is sized for a pen rather than a machine:
+That approach is why the format is what it is. Every example is sized for a pen rather than a machine:
 
 - 4 to 10 rows of data, never a realistic dataset
 - clean denominators, small integers, logs of powers of two
@@ -75,15 +75,15 @@ That belief is why the format is what it is. Every example is sized for a pen ra
 - every intermediate number computed in a script and verified before it is written down, so an hour of your paper time is never wasted chasing a typo
 - a cheat sheet designed to be copied onto one sheet and then rewritten from memory
 
-**An honest caveat, since this repo's own rule is to flag what is contested.** The popular claim that handwriting beats typing for notes did not cleanly replicate.[^4] I am not going to cite a shaky result to justify a preference. What *does* hold up is the reason the format works anyway: retrieval practice, the worked-example effect for beginners, and the generation effect all have solid support, and all three are things you get from working a problem rather than reading one. Do it by hand because the practice is well-founded. Not because of the headline.
+**An honest caveat, since this repo's own rule is to flag what is contested.** The popular claim that handwriting beats typing for notes did not cleanly replicate.[^4] I am not going to cite a shaky result to justify a preference. What *does* hold up is the reason the format works anyway: retrieval practice, the worked-example effect for beginners, and the generation effect all have solid support, and all three are things you get from working a problem rather than reading one. Do it by hand because the practice is well-founded. 
 
 ---
 
 ## The second skill: `slop-proofcheck`
 
-Telling a model "length is not a cost" is the single most reliable way to summon padding. So the walkthrough gets read back by a second skill before it is handed over.
+Telling a model "length is not a cost" is the single most reliable way to summon padding. So the walkthrough gets read back by a second skill before it is handed over. It's also great for making the resulting docs much more readable, as LLMs have their own way of writing and once you go through enough LLM-generated text it might get a bit annoying.
 
-It borrows its pattern list from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop), then re-scopes it, because that framework is written for personal essays and a lesson is not an essay. The differences are the point:
+It borrows its pattern list from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop), but re-scopes it, because that framework is written for personal essays and a lesson is not an essay. The differences are the point:
 
 | A general anti-slop pass says | For teaching prose |
 |---|---|
@@ -98,7 +98,7 @@ And three failure modes that only appear in explanatory writing, which a general
 - **The magic step.** `it can be shown that`, `after some algebra`. A skipped step wearing the costume of an obvious one.
 - **Synonym cycling**, promoted from style tic to hard error. A learner reading *feature*, *attribute*, *variable* and *predictor* for one object concludes there are four.
 
-**House rule: no long dashes.** No em dashes (`U+2014`), no en dashes (`U+2013`), anywhere. Plain hyphens only. This is deliberately stricter than correct typography: the em dash has become a loud surface tell of machine-written text, and readers now discount prose on sight of it. That costs more than the typographic nicety is worth, so it is enforced mechanically rather than left to judgment.
+**Another house rule: no long dashes.** No em dashes (`U+2014`), no en dashes (`U+2013`), anywhere. Plain hyphens only. This is deliberately stricter than correct typography: the em dash has become a loud surface tell of machine-written text, and readers now discount prose on sight of it. I blame LLMs for making me hate the long dashes, but WCYD at this point.
 
 Run it on anything, not just walkthroughs. Installed as a plugin the skill is namespaced; copied into `~/.claude/skills/` it is not:
 
