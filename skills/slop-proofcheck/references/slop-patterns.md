@@ -329,6 +329,6 @@ Things that trip a slop detector and should survive the pass untouched. Check th
 4. Sweep for §2.10 synonym cycling: list the nouns naming the lesson's central object and confirm exactly one is used.
 5. Read the openers and closers. Sections open on the problem; the document ends on the sources.
 6. Check the keep list before finalising any cut.
-7. Re-run `check_obsidian.py` afterwards - prose edits inside callouts and tables can break the `> ` prefix or a math delimiter.
+7. Re-run `check_obsidian.py` afterwards, from the `learning-walkthrough` skill, if the file is a walkthrough - prose edits inside callouts and tables can break the `> ` prefix or a math delimiter.
 
 Step 7 is not optional. A slop fix that breaks a formula has made the document worse.

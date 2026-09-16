@@ -52,8 +52,10 @@ When a judgment call is genuinely close, read the sentence aloud in that voice. 
 **Gate 1 - mechanical.** Run the script. It catches the vocabulary and phrase-level tells, which are not judgment calls:
 
 ```bash
-python skills/slop-proofcheck/scripts/check_slop.py <file.md>
+python "${CLAUDE_PLUGIN_ROOT}/skills/slop-proofcheck/scripts/check_slop.py" <file.md>
 ```
+
+`${CLAUDE_PLUGIN_ROOT}` resolves when this skill is installed as part of the `learning-assistant` plugin. If it is not set - the skill was copied into `~/.claude/skills/`, or you are working in the source repo - use the path to this skill's own `scripts/check_slop.py` instead.
 
 `cut:` hits are failures - fix every one. `check:` hits are candidates that have legitimate technical uses; confirm each one is the technical sense and move on.
 
