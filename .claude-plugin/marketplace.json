@@ -1,0 +1,28 @@
+{
+  "name": "learning-assistant",
+  "owner": {
+    "name": "Sam Maliarov",
+    "url": "https://github.com/samalyarov"
+  },
+  "description": "Agent Skills for studying: build a walkthrough from course material, then proofcheck the prose.",
+  "plugins": [
+    {
+      "name": "learning-assistant",
+      "source": "./",
+      "description": "Turns course material into a study walkthrough you can work through by hand, then strips AI-slop prose from the result.",
+      "author": {
+        "name": "Sam Maliarov"
+      },
+      "homepage": "https://github.com/samalyarov/learning-assistant",
+      "license": "MIT",
+      "keywords": [
+        "learning",
+        "study",
+        "obsidian",
+        "latex",
+        "writing",
+        "ai-slop"
+      ]
+    }
+  ]
+}

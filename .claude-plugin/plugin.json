@@ -1,0 +1,22 @@
+{
+  "name": "learning-assistant",
+  "description": "Turns course material you don't understand into a study walkthrough you can work through by hand, with every symbol named and every number verified. Includes a proofcheck pass that strips AI-slop prose without flattening teaching material.",
+  "author": {
+    "name": "Sam Maliarov",
+    "url": "https://github.com/samalyarov"
+  },
+  "homepage": "https://github.com/samalyarov/learning-assistant",
+  "repository": "https://github.com/samalyarov/learning-assistant",
+  "license": "MIT",
+  "keywords": [
+    "learning",
+    "study",
+    "teaching",
+    "obsidian",
+    "latex",
+    "walkthrough",
+    "writing",
+    "editing",
+    "ai-slop"
+  ]
+}
